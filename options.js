@@ -24,13 +24,17 @@ chrome.storage.local.get({'savedSettings': []}, function(data) {
 var saveBtn = document.getElementById("saveData");
 saveBtn.addEventListener('click', function() {
 
-    settings = {autosaver:autosaverInput.checked, interval:intervalInput.value, ghostMode:ghostModeInput.checked}; // default settings
-    chrome.storage.local.set({'savedSettings': settings}, function() {
-        //console.log("saved.");
-        chrome.runtime.sendMessage({command: "updateSettings"}, function(response) {
-            //console.log(response.ok);
+    if(intervalInput.checkValidity()){
+        settings = {autosaver:autosaverInput.checked, interval:intervalInput.value, ghostMode:ghostModeInput.checked}; // default settings
+        chrome.storage.local.set({'savedSettings': settings}, function() {
+            //console.log("saved.");
+            chrome.runtime.sendMessage({command: "updateSettings"}, function(response) {
+                //console.log(response.ok);
+            });
         });
-    });
-    window.close();
+        window.close();
+    }else{
+        intervalInput.reportValidity();
+    }
 
 }, false);
