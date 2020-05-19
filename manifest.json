@@ -1,0 +1,29 @@
+{
+    "manifest_version": 2,
+
+    "name": "Instagram Black",
+    "description": "Autosave instagram stories anonymously, or surf on instagram as ghost.",
+    "version": "1.0",
+
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html"
+    },
+    "options_ui": {
+        "page": "options.html",
+        "open_in_tab": false
+    },
+    "permissions": [
+        "https://*.instagram.com/*",
+        "webRequest",
+        "webRequestBlocking",
+        "https://www.instagram.com/graphql/query/*",
+        "http://www.google.com/*",
+        "cookies",
+        "storage",
+        "downloads"
+    ],
+    "background": {
+        "scripts": ["background.js"]
+    }
+}

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" charset="UTF-8">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+
+        <style>
+            body {
+                margin: 0;
+                min-width: 500px;
+            }
+
+            /* Include the padding and border in an element's total width and height */
+            * {
+                box-sizing: border-box;
+            }
+
+            /* Remove margins and padding from the list */
+            ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Style the list items */
+            ul li {
+                cursor: pointer;
+                position: relative;
+                padding: 12px 8px 12px 40px;
+                list-style-type: none;
+                background: #eee;
+                font-size: 18px;
+                transition: 0.2s;
+
+                /* make the list items unselectable */
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            /* Set all odd list items to a different color (zebra-stripes) */
+            ul li:nth-child(odd) {
+                background: #f9f9f9;
+            }
+
+            /* Darker background-color on hover */
+            ul li:hover {
+                background: #ddd;
+            }
+
+            /* Style the close button */
+            .close {
+                position: absolute;
+                right: 0;
+                top: 0;
+                padding: 12px 16px 12px 16px;
+            }
+
+            .close:hover {
+                background-color: #f44336;
+                color: white;
+            }
+
+            /* Style the header */
+            .header {
+                background-color: #434749;
+                padding: 10px 30px 30px 30px;
+                color: white;
+                text-align: center;
+
+                /* make the list items unselectable */
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            /* Clear floats after the header */
+            .header:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            /* Style the input */
+            input {
+                height: 40px;
+                margin: 0;
+                border: none;
+                border-radius: 0;
+                width: 60%;
+                padding: 10px;
+                float: left;
+                font-size: 16px;
+            }
+            input:focus {
+                outline-width: 0;
+            }
+
+            /* Style the "Add" button */
+            .addBtn {
+                border: 5px white solid;
+                height: 40px;
+                padding: 5px;
+                width: 20%;
+                background: #d9d9d9;
+                color: #555;
+                float: left;
+                text-align: center;
+                font-size: 16px;
+                cursor: pointer;
+                transition: 0.3s;
+                border-radius: 0;
+            }
+
+            .addBtn:hover {
+                background-color: #bbb;
+            }
+
+            .optBtn{
+                cursor: pointer;
+                font-size: 20px;
+                color: white;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+
+            .inactive{
+                text-decoration: line-through;
+            }
+            
+            .ghostBtn{
+                cursor: pointer;
+                font-size: 18px;
+                color: white;
+                position: absolute;
+                top: 10px;
+                left: 10px;
+            }
+
+            .ghostMode{
+                margin: 0px 0px 0px 25px !important;
+                padding: 0px !importat;
+                font-size: 15px;
+                color: limegreen;
+                position: absolute;
+                top: 8px;
+                left: 10px;
+                display: block;
+            }
+
+            .off{
+                display: none !important;
+            }
+
+        </style>
+
+
+    </head>
+    <body>
+
+        <div id="popupDiv" class="header">
+            <i id="ghostBtn" class="fas fa-ghost ghostBtn"></i>
+            <h3 id="ghostText" class="ghostMode off">Ghost Mode Active</h3>
+            <h2 style="margin-bottom: 20px">Instagram Black</h2>
+            <i id="go-to-options" class="fas fa-cog optBtn"></i>
+            <input type="text" id="usernameInput" placeholder="username...">
+            <span id="addBtn" class="addBtn">Add</span>
+            <span id="chkBtn" class="addBtn">Check</span>
+
+        </div>
+
+        <ul id="userListUL">
+        </ul>
+
+        <script src="popup.js"></script>
+
+    </body>
+</html>
