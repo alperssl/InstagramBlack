@@ -1,5 +1,5 @@
 # InstagramBlack
-Some stupid code to do something stupid.
+Some stupid code to do something stupid.  
 Autosave instagram stories anonymously, or surf on instagram as ghost.
 
 # How to use
