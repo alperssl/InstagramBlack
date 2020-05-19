@@ -28,7 +28,7 @@ saveBtn.addEventListener('click', function() {
     chrome.storage.local.set({'savedSettings': settings}, function() {
         //console.log("saved.");
         chrome.runtime.sendMessage({command: "updateSettings"}, function(response) {
-            //console.log(response.farewell);
+            //console.log(response.ok);
         });
     });
     window.close();
