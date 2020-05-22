@@ -7,7 +7,7 @@ With Telegram Bot you can get notifications and control this extension in telegr
 Sorry for poor code. And fckn pointless variable names, I was high a bit )).
 
 # How to use
-1. Download latest release by [this link](https://github.com/alperssl/InstagramBlack/releases/download/1.0/InstagramBlack1V0.rar) and extract.
+1. Download latest version by [this link](https://github.com/alperssl/InstagramBlack/archive/master.zip) and extract.
 2. Go to [chrome://extensions/](chrome://extensions/) and turn on developer mode.
 3. Click the Load unpacked extension button and select the unzipped folder for your extension to install it.
 4. Enjoy your new Instagram experience ))
