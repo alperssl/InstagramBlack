@@ -22,6 +22,16 @@
                 -ms-user-select: none;
                 user-select: none;
             }
+            .clrBtn{
+                font-size: 16px;
+                border-radius: 5px;
+                
+                /* make the list items unselectable */
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
             .opts *{
                 margin-top: 20px;
                 
@@ -33,6 +43,10 @@
             }
             .labelH{
                 font-size: 15px;
+            }
+            
+            .hidden{
+                display: none !important;
             }
 
 
@@ -48,8 +62,23 @@
             <input type="number" id="interval" name="interval" min="10" max="3600" value="30"><br>
 
             <input type="checkbox" id="ghostMode" name="ghostMode" value="true">
-            <label class="labelH" title="Just for instagram, stories saved by extension will always be anonymous." for="ghostMode"> Enable Ghost Mode for Instagram</label>
-
+            <label class="labelH" title="Just for instagram, stories saved by extension will always be anonymous." for="ghostMode"> Enable Ghost Mode for Instagram</label><br>
+            
+            <input type="checkbox" id="telegramState" name="telegramState" value="true">
+            <label class="labelH" title="You have to provide token." for="telegramState"> Enable TelegramBot (Token Required)</label><br>
+            
+            <label class="labelH hidden bot" for="telegramToken">TelegramBot Token: </label>
+            <input class="hidden bot" type="text" id="telegramToken" name="telegramToken" required><br>
+            
+            <label class="labelH hidden bot" for="telegramChatId">Chat Id: </label>
+            <input class="hidden bot" type="text" id="telegramChatId" name="telegramChatId" required><br>
+            
+            <input class="hidden bot" type="checkbox" id="telegramNotifyState" name="telegramNotifyState" value="true">
+            <label class="labelH hidden bot" title="If you enable you will get notifications." for="telegramNotifyState"> Enable Telegram Notification</label><br>
+            
+            <button class="clrBtn" id="clearStorage">Clear Autosave History</button><br>
+            <button class="clrBtn" id="clearNotifyStorage">Clear Notification History</button>
+            
         </div>
         <br>
 
