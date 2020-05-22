@@ -219,7 +219,7 @@ chrome.webRequest.onBeforeRequest.addListener(
     () => ({
         cancel: ghostModeState
     }),
-    { urls: [ '*://*.instagram.com/stories/reel/seen*' ] },
+    { urls: [ '*://*.instagram.com/stories/reel/seen*','*://*.instagram.com/direct_v2/web/threads/*/items/*/seen*' ] },
     [ 'blocking' ]
 );
 
