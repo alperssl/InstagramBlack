@@ -3,12 +3,40 @@ var watchList;
 
 var ghostModeState;
 
+var telegramBotState;
+
+var telegramNotifyState;
+
+function updateTelegramNotifyState(telegramNotify){
+    chrome.storage.local.get({'savedSettings': []}, function(data) {
+        settings = data.savedSettings;
+
+        if(settings.telegramToken && settings.telegramBotState){
+            settings.telegramNotifyState = telegramNotify;
+
+            chrome.storage.local.set({'savedSettings': settings}, function() {
+                //console.log("saved.");
+                chrome.runtime.sendMessage({command: "updateSettings"}, function(response) {
+                    //console.log(response.ok);
+                });
+            });
+        }else{
+            alert("You should activate Telegram Bot first to use notifications.");
+        }
+    });
+}
+
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
 
         if (request.command == "updatePopup"){
             updatePopup();
+            sendResponse({resp: "ok"});
+            return true;
+        }
+        if (request.command == "syncList"){
+            syncList();
             sendResponse({resp: "ok"});
             return true;
         }
@@ -21,6 +49,10 @@ document.getElementById("ghostBtn").addEventListener('click', function() {
     updateGhostMode(!ghostModeState);
 });
 
+
+document.getElementById("telegramIcon").addEventListener('click', function() {
+    updateTelegramNotifyState(!telegramNotifyState);
+});
 
 
 document.getElementById("go-to-options").addEventListener('click', function() {
@@ -35,6 +67,13 @@ document.getElementById("go-to-options").addEventListener('click', function() {
 function syncList(){
     chrome.storage.local.get({'userWatchlist': []}, function(data) {
         watchList = data.userWatchlist;
+
+        var listElements = document.getElementsByTagName("LI");
+
+        for(var i = 0; i < listElements.length; i++)
+        {
+            listElements[i].parentNode.removeChild(listElements[i]);
+        }
 
         //TODO: what if watchlist not defined yet ? But works so far =) probably I'm not gonna touch
 
@@ -54,10 +93,10 @@ function syncList(){
             li.appendChild(span);
 
             var close = document.getElementsByClassName("close");
-            for (var i = 0; i < close.length; i++) {
-                close[i].onclick = function() {
+            for (var p = 0; p < close.length; p++) {
+                close[p].onclick = function() {
                     var div = this.parentElement;
-                    div.style.display = "none";
+                    //div.style.display = "none";
                     var closeId = div.getAttribute("id");
                     removeFromWatchlist(closeId);
                     div.parentNode.removeChild(div);
@@ -76,14 +115,17 @@ function addUserToList(usernameIn, idIn){
 
     chrome.storage.local.get({'userWatchlist': []}, function(data) {
         watchList = data.userWatchlist;
+
+        watchList.push(newUser);
+
+        chrome.storage.local.set({'userWatchlist': watchList}, function() {
+            //console.log("done.");
+            refreshListOnBack();
+        });
+
     });
 
-    watchList.push(newUser);
 
-    chrome.storage.local.set({'userWatchlist': watchList}, function() {
-        //console.log("done.");
-        refreshListOnBack();
-    });
 }
 
 function removeFromWatchlist(id){
@@ -168,7 +210,7 @@ function getIdByUsername(username, callback){
             }else{
                 callback("0");
             }
-            
+
 
         };
         xhr.open('GET', RqstUrl);
@@ -239,9 +281,9 @@ function updateGhostMode(ghostmode){
         settings = data.savedSettings;
 
         if(settings.interval){
-            
+
             settings.ghostMode = ghostmode;
-            
+
             chrome.storage.local.set({'savedSettings': settings}, function() {
                 //console.log("saved.");
                 chrome.runtime.sendMessage({command: "updateSettings"}, function(response) {
@@ -251,6 +293,8 @@ function updateGhostMode(ghostmode){
         }
     });
 }
+
+
 
 
 function updatePopup(){
@@ -263,6 +307,8 @@ function updatePopup(){
         if(settings.interval){
             var autosaveState = settings.autosaver;
             ghostModeState = settings.ghostMode;
+            telegramBotState = settings.telegramBotState;
+            telegramNotifyState = settings.telegramNotifyState;
 
             if(ghostModeState){
                 document.getElementById("ghostText").classList.remove("off");
@@ -272,13 +318,43 @@ function updatePopup(){
                 document.getElementById("ghostBtn").style.color = "white";
             }
 
-            if(!autosaveState){
+
+            var telegramIcon = document.getElementById("telegramIcon");
+
+            if(telegramNotifyState){
+                telegramIcon.setAttribute('title', "Telegram Notifications Active");
+                telegramIcon.style.color = "#0088cc";
+            }else{
+                telegramIcon.setAttribute('title', "Telegram Notifications Disabled");
+                telegramIcon.style.color = "white";
+            }
+
+
+            if(!autosaveState && !telegramNotifyState){
                 var element = document.getElementsByTagName("LI");
 
                 for(var i = 0; i < element.length; i++)
                 {
                     element[i].classList.add('inactive');
-                    element[i].setAttribute('title', "Autosave Disabled!");
+                    element[i].setAttribute('title', "Autosave and Telegram Notification Disabled!");
+                }
+
+            }else if(!autosaveState && telegramNotifyState){
+                var element = document.getElementsByTagName("LI");
+
+                for(var i = 0; i < element.length; i++)
+                {
+                    element[i].classList.remove('inactive');
+                    element[i].setAttribute('title', "Autosave disabled, but you will get telegram notification.");
+                }
+
+            }else if(autosaveState && !telegramNotifyState){
+                var element = document.getElementsByTagName("LI");
+
+                for(var i = 0; i < element.length; i++)
+                {
+                    element[i].classList.remove('inactive');
+                    element[i].setAttribute('title', "Telegram notification disabled, but Autosave still active.");
                 }
 
             }else{
@@ -287,7 +363,7 @@ function updatePopup(){
                 for(var i = 0; i < element.length; i++)
                 {
                     element[i].classList.remove('inactive');
-                    element[i].setAttribute('title', "Click to check now.");
+                    element[i].setAttribute('title', "Click to check now. Notification and Autosave active.");
                 }
             }
 
@@ -298,4 +374,3 @@ function updatePopup(){
 
 }
 updatePopup();
-
