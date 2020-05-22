@@ -1,6 +1,7 @@
 # InstagramBlack
 Some stupid code to do something stupid.  
 Autosave instagram stories anonymously, or surf on instagram as ghost.
+In ghost mode you can look to stories and DM without sending read receipts.
 With Telegram Bot you can get notifications and control this extension in telegram chat.
 
 Sorry for poor code. And fckn pointless variable names, I was high a bit )).
