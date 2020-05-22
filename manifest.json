@@ -2,8 +2,8 @@
     "manifest_version": 2,
 
     "name": "Instagram Black",
-    "description": "Autosave instagram stories anonymously, or surf on instagram as ghost.",
-    "version": "1.0",
+    "description": "Autosave instagram stories anonymously, or surf on instagram as ghost. And you can get notifications with Telegram Bot.",
+    "version": "1.5",
 
     "browser_action": {
         "default_icon": "icon.png",
@@ -14,12 +14,10 @@
         "open_in_tab": false
     },
     "permissions": [
+        "https://api.telegram.org/bot*",
         "https://*.instagram.com/*",
         "webRequest",
         "webRequestBlocking",
-        "https://www.instagram.com/graphql/query/*",
-        "http://www.google.com/*",
-        "cookies",
         "storage",
         "downloads"
     ],
