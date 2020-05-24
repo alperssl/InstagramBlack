@@ -223,7 +223,6 @@ chrome.webRequest.onBeforeRequest.addListener(
     [ 'blocking' ]
 );
 
-
 //************************************----------TelegramBot-------************************
 
 function updateAutosaveState(state, callback){
@@ -1104,7 +1103,13 @@ function check(targetId, isSilent, isDownload, notify, unSaved = false, callback
     xhr.onload = function() {
         var json = xhr.responseText;                         // Response
         json = json.replace(/^[^(]*\(([\S\s]+)\);?$/, '$1'); // Turn JSONP in JSON
-        json = JSON.parse(json);
+        try {
+            json = JSON.parse(json);
+        }
+        catch(err) {
+            console.log(err.message);
+        }
+
 
         var allStories = json.data.user.feed_reels_tray.edge_reels_tray_to_reel.edges;
 
@@ -1146,7 +1151,13 @@ function check(targetId, isSilent, isDownload, notify, unSaved = false, callback
                     xhr2.onload = function() {
                         var json2 = xhr2.responseText;                         // Response
                         json2 = json2.replace(/^[^(]*\(([\S\s]+)\);?$/, '$1'); // Turn JSONP in JSON
-                        json2 = JSON.parse(json2);         
+                        try {
+                            json2 = JSON.parse(json2);
+                        }
+                        catch(err) {
+                            console.log(err.message);
+                        }
+                                
 
                         // we got all we need which what is on tagets story circle
                         //console.log(json2);
@@ -1271,7 +1282,7 @@ function check(targetId, isSilent, isDownload, notify, unSaved = false, callback
                                 }
                             }
                         }
-                        
+
 
                         //after save, set last of target
                         if(!unSaved){
