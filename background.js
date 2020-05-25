@@ -1108,6 +1108,7 @@ function check(targetId, isSilent, isDownload, notify, unSaved = false, callback
         }
         catch(err) {
             console.log(err.message);
+            return;
         }
 
 
@@ -1156,6 +1157,7 @@ function check(targetId, isSilent, isDownload, notify, unSaved = false, callback
                         }
                         catch(err) {
                             console.log(err.message);
+                            return;
                         }
                                 
 
