@@ -117,6 +117,15 @@ var setIntervalKeybrd = {
     ]
 };
 
+//delete deletable message
+var deleteKeyboard = {
+    "inline_keyboard": [
+        [
+            {"text":"OK!", "callback_data": "delDeletable"}
+        ]
+    ]
+};
+
 
 // One time Actions Menu
 var oneTimeKeybrd = {
@@ -126,7 +135,7 @@ var oneTimeKeybrd = {
             {"text": "Download by Username", "callback_data": "b7"}
         ],
         [
-            {"text": "« Go Back", "callback_data": "goBackOneTimeMenu"},
+            {"text": "« Go Back", "callback_data": "goBackOneTimeMenu"}
         ]
     ]
 };
@@ -166,6 +175,39 @@ function makeWatchlistKeyboard(callback){
             {"text":"« Go Back", "callback_data": "watchlistBack"}
         ];
         keyboard.inline_keyboard.push(newAddBckBtn);
+
+        callback(keyboard);
+    });
+}
+
+function makeCheckWatchlistKeyboard(callback){
+
+    var keyboard = {
+        "inline_keyboard": []
+    };
+
+    chrome.storage.local.get({'userWatchlist': []}, function(data) {
+        var tempWatchList = data.userWatchlist;
+
+        for(var i=0; i < tempWatchList.length; i++){
+            var btnTxt = tempWatchList[i].username;
+            var data = btnTxt + "+üser+" + tempWatchList[i].id;
+            var newBtn = [{"text":btnTxt, "callback_data": data}];
+
+            keyboard.inline_keyboard.push(newBtn);
+        }
+
+        var newOnetimeActBtns = [
+            {"text": "Check by Username", "callback_data": "b5"},
+            {"text": "Download by Username", "callback_data": "b7"}
+        ];
+
+        var newOnetimeBckBtn = [
+            {"text": "« Go Back", "callback_data": "goBackOneTimeMenu"}
+        ];
+
+        keyboard.inline_keyboard.push(newOnetimeActBtns);
+        keyboard.inline_keyboard.push(newOnetimeBckBtn);
 
         callback(keyboard);
     });
@@ -469,7 +511,9 @@ function startListenTelegram(){
         var gotUsername = 0;
         var lastGotUsernameMesId = 0;
         var gotUsernameTxt = "";
-
+        
+        var delCheckMesId = "0";
+        
         var xhr = new XMLHttpRequest();
 
         xhr.onload = function() {
@@ -731,11 +775,13 @@ function startListenTelegram(){
 
                                 case "oneTimeMenu": // Open One Time Actions Menu
 
-                                    var onetimeMenuTxt = "<b>Insatagram Black Menu</b>\n\n<b>One Time Actions</b>\n\nSend username and touch what you want to do.";
+                                    var onetimeMenuTxt = "<b>Insatagram Black Menu</b>\n\n<b>One Time Actions</b>\n\nSend username and touch what you want to do. Or Just touch to username to check inline.";
 
-                                    telegramEditMessageTextMarkup(menuMessageId, onetimeMenuTxt, oneTimeKeybrd);
-                                    expectUsername = true;
-                                    telegramAnswer(callback_query.id, "", false);
+                                    makeCheckWatchlistKeyboard(function(listKeybrd){
+                                        telegramEditMessageTextMarkup(menuMessageId, onetimeMenuTxt, listKeybrd);
+                                        expectUsername = true;
+                                        telegramAnswer(callback_query.id, "", false);
+                                    });
 
                                     break;
 
@@ -782,8 +828,10 @@ function startListenTelegram(){
                                                             telegramDeleteMessage(menuMessageId);
                                                             menuMessageId = 0;
 
-                                                            telegramSendInline(onetimeMenuTxtN, oneTimeKeybrd, function(messId){
-                                                                menuMessageId = messId;
+                                                            makeCheckWatchlistKeyboard(function(listKeybrd){
+                                                                telegramSendInline(onetimeMenuTxtN, listKeybrd, function(messId){
+                                                                    menuMessageId = messId;
+                                                                });
                                                             });
 
                                                             telegramAnswer(callback_query.id, "We got all.", true);
@@ -823,8 +871,10 @@ function startListenTelegram(){
                                                             telegramDeleteMessage(menuMessageId);
                                                             menuMessageId = 0;
 
-                                                            telegramSendInline(onetimeMenuTxtN, oneTimeKeybrd, function(messId){
-                                                                menuMessageId = messId;
+                                                            makeCheckWatchlistKeyboard(function(listKeybrd){
+                                                                telegramSendInline(onetimeMenuTxtN, listKeybrd, function(messId){
+                                                                    menuMessageId = messId;
+                                                                });
                                                             });
 
                                                             telegramAnswer(callback_query.id, "We got all.", true);
@@ -852,6 +902,16 @@ function startListenTelegram(){
                                     menuMessageId = 0;
                                     break;
 
+                                case "delDeletable": // delete deletable message if exist
+                                    if(delCheckMesId != "0"){
+                                        telegramDeleteMessage(delCheckMesId);
+                                        delCheckMesId = "0";
+                                        telegramAnswer(callback_query.id, "", false);
+                                    }else{
+                                        telegramAnswer(callback_query.id, "", false);
+                                    }
+                                    break;
+
                                 default:
                                     if(callback_query.data.indexOf("watchlistUser-") == 0){
                                         var idToDelete = (callback_query.data).slice(14);
@@ -861,6 +921,55 @@ function startListenTelegram(){
                                                 var deleteMs = usrname + "removed from list.";
                                                 telegramAnswer(callback_query.id, deleteMs, false);
                                             });
+                                        });
+                                    }
+                                    if(callback_query.data.indexOf("+üser+") != -1){
+                                        var usernameAndId = callback_query.data;
+
+                                        let n = usernameAndId.indexOf("+üser+");
+                                        var usernameToSend = usernameAndId.slice(0, n);
+                                        var idToCheck = usernameAndId.slice(n+6);
+
+                                        check(idToCheck, true, false, false, true, function(got){
+                                            if(got == "nothing"){
+                                                telegramAnswer(callback_query.id, "User don't have any story.", true);
+                                            }else{
+
+                                                var deletableMes = "<b>" + usernameToSend + "</b> shared";
+
+                                                for(let v = 0; v < got.length; v++){
+                                                    
+                                                    if(got[v].is_video == true){
+                                                        //video
+                                                        let timeStamp = got[v].taken_at_timestamp;
+                                                        let timeStampTxt = timestampToDate(timeStamp);
+                                                        let videoRes = got[v].video_resources;
+                                                        let fileURL = videoRes[videoRes.length-1].src;
+                                                        
+                                                        let newStoryTxt = "\n<a href='" + fileURL + "'>this</a> story on " + timeStampTxt;
+                                                        deletableMes = deletableMes.concat(newStoryTxt);
+
+                                                    }else{
+                                                        //photo
+                                                        let timeStamp = got[v].taken_at_timestamp;
+                                                        let timeStampTxt = timestampToDate(timeStamp);
+                                                        let photoRes = got[v].display_resources;
+                                                        let fileURL = photoRes[photoRes.length-1].src;
+
+                                                        let newStoryTxt = "\n<a href='" + fileURL + "'>this</a> story on " + timeStampTxt;
+                                                        deletableMes = deletableMes.concat(newStoryTxt);
+                                                    }
+                                                }
+                                                
+                                                if(delCheckMesId != "0"){
+                                                    telegramDeleteMessage(delCheckMesId);
+                                                    delCheckMesId = "0";
+                                                }
+                                                telegramSendInline(deletableMes,deleteKeyboard,function(deletableMesId){
+                                                    delCheckMesId = deletableMesId;
+                                                    telegramAnswer(callback_query.id, "", false);
+                                                });
+                                            }
                                         });
                                     }
                             }
@@ -1156,15 +1265,24 @@ function check(targetId, isSilent, isDownload, notify, unSaved = false, callback
                             json2 = JSON.parse(json2);
                         }
                         catch(err) {
-                            console.log(err.message);
-                            return;
+                            if(callback && !isDownload && !notify && unSaved){
+                                callback("opps");
+                            }else{
+                                console.log(err.message);
+                                return;
+                            }
                         }
-                                
+
 
                         // we got all we need which what is on tagets story circle
                         //console.log(json2);
 
                         var storyDataOfTarget = json2.data.reels_media[0].items; // all stories curently in circle
+
+                        if(!isDownload && !notify && unSaved){
+                            callback(storyDataOfTarget);
+                        }
+
                         var storyCountOnCircle = json2.data.reels_media[0].items.length;
                         lastOnTarget = json2.data.reels_media[0].latest_reel_media;
                         var targetUsername = json2.data.reels_media[0].owner.username;
@@ -1298,7 +1416,7 @@ function check(targetId, isSilent, isDownload, notify, unSaved = false, callback
                         if(!isSilent){
                             alert("Saved all");
                         }
-                        if(callback){
+                        if(callback && !(!isDownload && !notify && unSaved)){
                             callback("gotAll");
                         }
 
@@ -1314,7 +1432,7 @@ function check(targetId, isSilent, isDownload, notify, unSaved = false, callback
                     if(!isSilent){
                         alert("Allready have those!");  
                     }
-                    if(callback){
+                    if(callback && !(!isDownload && !notify && unSaved)){
                         callback("haveThem");
                     }
                 }
@@ -1324,5 +1442,5 @@ function check(targetId, isSilent, isDownload, notify, unSaved = false, callback
 
     };
     xhr.open('GET', 'https://www.instagram.com/graphql/query/?query_hash=04334405dbdef91f2c4e207b84c204d7&variables=%7B%22only_stories%22%3Atrue%2C%22stories_prefetch%22%3Afalse%2C%22stories_video_dash_manifest%22%3Afalse%7D');
-    xhr.send(); 
+    xhr.send();
 }
