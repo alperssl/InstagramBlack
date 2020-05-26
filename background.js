@@ -933,6 +933,8 @@ function startListenTelegram(){
                                         check(idToCheck, true, false, false, true, function(got){
                                             if(got == "nothing"){
                                                 telegramAnswer(callback_query.id, "User don't have any story.", true);
+                                            }else if(got == "opps"){
+                                                telegramAnswer(callback_query.id, "Opps!", true);
                                             }else{
 
                                                 var deletableMes = "<b>" + usernameToSend + "</b> shared";
