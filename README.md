@@ -19,7 +19,7 @@ So, to create telegram bot:
 2- Send /newbot command.  
 3- Enter name for your bot.  
 4- Enter username for your bot.  
-5- And you will get a token. Whish is looks like 110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw this one.  
+5- And you will get a token. Whish is looks like "110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw" this one.  
 6- After you get your token. Go to this address with your token on your browser. https://api.telegram.org/botYOURTOKEN/getUpdates  
 7- And on your telegram account send something to your bot.  
 8- And refresh updates page on your browser and get chat id.  
