@@ -568,7 +568,7 @@ function startListenTelegram(){
 
                                 if(menuMessageId == 0){
                                     telegramDeleteMessage(result[i].message.message_id);
-                                    var ms = "<b>Insatagram Black Menu</b>" ;
+                                    var ms = "<b>Instagram Black Menu</b>" ;
                                     menuKeybrd = menuKeybrdSelector();
                                     telegramSendInline(ms, menuKeybrd, function(messId){
                                         menuMessageId = messId;
@@ -577,7 +577,7 @@ function startListenTelegram(){
                                     telegramDeleteMessage(menuMessageId);
                                     menuMessageId = 0;
                                     telegramDeleteMessage(result[i].message.message_id);
-                                    var ms = "<b>Insatagram Black Menu</b>" ;
+                                    var ms = "<b>Instagram Black Menu</b>" ;
                                     menuKeybrd = menuKeybrdSelector();
                                     telegramSendInline(ms, menuKeybrd, function(messId){
                                         menuMessageId = messId;
@@ -606,7 +606,7 @@ function startListenTelegram(){
                                     updateCheckInterval(mesTxt, function(){
                                         telegramSendMessage(succsessMes,function(sentMesId){
                                             succsessMesId = sentMesId;
-                                            var intervalMenuRefMessage = "<b>Insatagram Black Menu</b>\nCurrent interval: <b>" + checkInterval + "</b>\nEnter interval in seconds 10-3600:";
+                                            var intervalMenuRefMessage = "<b>Instagram Black Menu</b>\nCurrent interval: <b>" + checkInterval + "</b>\nEnter interval in seconds 10-3600:";
                                             telegramEditMessageTextMarkup(menuMessageId, intervalMenuRefMessage, setIntervalKeybrd);
                                         });
                                     });
@@ -708,7 +708,7 @@ function startListenTelegram(){
 
                                 case "b2": // Set Check Interval Button
                                     telegramAnswer(callback_query.id, "", false);
-                                    var intervalMenuMessage = "<b>Insatagram Black Menu</b>\nCurrent interval: <b>" + checkInterval + "</b>\nEnter interval in seconds 10-3600:";
+                                    var intervalMenuMessage = "<b>Instagram Black Menu</b>\nCurrent interval: <b>" + checkInterval + "</b>\nEnter interval in seconds 10-3600:";
                                     telegramEditMessageTextMarkup(menuMessageId, intervalMenuMessage, setIntervalKeybrd);
                                     waitForIntervalReply = true;
                                     break;
@@ -721,14 +721,14 @@ function startListenTelegram(){
                                         telegramDeleteMessage(succsessMesId);
                                     }
                                     menuKeybrd = menuKeybrdSelector();
-                                    telegramEditMessageTextMarkup(menuMessageId, "<b>Insatagram Black Menu</b>", menuKeybrd);
+                                    telegramEditMessageTextMarkup(menuMessageId, "<b>Instagram Black Menu</b>", menuKeybrd);
                                     waitForIntervalReply = false;
                                     telegramAnswer(callback_query.id, "", false);
                                     break;
 
                                 case "b3": // Show Watchlist Button
                                     makeWatchlistKeyboard(function(listKeybrd){
-                                        var menuTxt = "<b>Insatagram Black Menu</b>\n\n<b>Watchlist</b>\n\nTouch username to remove from list.\n\nSend username you want to add and touch add to watchlist.";
+                                        var menuTxt = "<b>Instagram Black Menu</b>\n\n<b>Watchlist</b>\n\nTouch username to remove from list.\n\nSend username you want to add and touch add to watchlist.";
 
                                         telegramEditMessageTextMarkup(menuMessageId, menuTxt, listKeybrd);
                                         expectUsername = true;
@@ -742,7 +742,7 @@ function startListenTelegram(){
                                         lastGotUsernameMesId = 0;
                                         gotUsernameTxt = "";
                                         menuKeybrd = menuKeybrdSelector();
-                                        telegramEditMessageTextMarkup(menuMessageId, "<b>Insatagram Black Menu</b>", menuKeybrd);
+                                        telegramEditMessageTextMarkup(menuMessageId, "<b>Instagram Black Menu</b>", menuKeybrd);
                                         telegramAnswer(callback_query.id, "", false);
                                     }else{
                                         expectUsername = false;
@@ -752,7 +752,7 @@ function startListenTelegram(){
                                         gotUsernameTxt = "";
 
                                         menuKeybrd = menuKeybrdSelector();
-                                        telegramEditMessageTextMarkup(menuMessageId, "<b>Insatagram Black Menu</b>", menuKeybrd);
+                                        telegramEditMessageTextMarkup(menuMessageId, "<b>Instagram Black Menu</b>", menuKeybrd);
                                         telegramAnswer(callback_query.id, "", false);
                                     }
                                     break;
@@ -790,7 +790,7 @@ function startListenTelegram(){
 
                                 case "oneTimeMenu": // Open One Time Actions Menu
 
-                                    var onetimeMenuTxt = "<b>Insatagram Black Menu</b>\n\n<b>One Time Actions</b>\n\nSend username and touch what you want to do. Or just touch to username to check inline.";
+                                    var onetimeMenuTxt = "<b>Instagram Black Menu</b>\n\n<b>One Time Actions</b>\n\nSend username and touch what you want to do. Or just touch to username to check inline.";
 
                                     makeCheckWatchlistKeyboard(function(listKeybrd){
                                         telegramEditMessageTextMarkup(menuMessageId, onetimeMenuTxt, listKeybrd);
@@ -807,7 +807,7 @@ function startListenTelegram(){
                                         lastGotUsernameMesId = 0;
                                         gotUsernameTxt = "";
                                         menuKeybrd = menuKeybrdSelector();
-                                        telegramEditMessageTextMarkup(menuMessageId, "<b>Insatagram Black Menu</b>", menuKeybrd);
+                                        telegramEditMessageTextMarkup(menuMessageId, "<b>Instagram Black Menu</b>", menuKeybrd);
                                         telegramAnswer(callback_query.id, "", false);
                                     }else{
                                         expectUsername = false;
@@ -817,7 +817,7 @@ function startListenTelegram(){
                                         gotUsernameTxt = "";
 
                                         menuKeybrd = menuKeybrdSelector();
-                                        telegramEditMessageTextMarkup(menuMessageId, "<b>Insatagram Black Menu</b>", menuKeybrd);
+                                        telegramEditMessageTextMarkup(menuMessageId, "<b>Instagram Black Menu</b>", menuKeybrd);
                                         telegramAnswer(callback_query.id, "", false);
                                     }
 
@@ -838,7 +838,7 @@ function startListenTelegram(){
                                                             telegramAnswer(callback_query.id, "User don't have stories.", true);
                                                             break;
                                                         case "gotAll":
-                                                            var onetimeMenuTxtN = "<b>Insatagram Black Menu</b>\n\n<b>One Time Actions</b>\n\nSend username and touch what you want to do.";
+                                                            var onetimeMenuTxtN = "<b>Instagram Black Menu</b>\n\n<b>One Time Actions</b>\n\nSend username and touch what you want to do.";
 
                                                             telegramDeleteMessage(menuMessageId);
                                                             menuMessageId = 0;
@@ -881,7 +881,7 @@ function startListenTelegram(){
                                                             telegramAnswer(callback_query.id, "User don't have stories.", true);
                                                             break;
                                                         case "gotAll":
-                                                            var onetimeMenuTxtN = "<b>Insatagram Black Menu</b>\n\n<b>One Time Actions</b>\n\nSend username and touch what you want to do.";
+                                                            var onetimeMenuTxtN = "<b>Instagram Black Menu</b>\n\n<b>One Time Actions</b>\n\nSend username and touch what you want to do.";
 
                                                             telegramDeleteMessage(menuMessageId);
                                                             menuMessageId = 0;
@@ -951,7 +951,7 @@ function startListenTelegram(){
                                         delCheckMesId = "0";
                                     }
 
-                                    var onetimeMenuTxtN = "<b>Insatagram Black Menu</b>\n\n<b>One Time Actions</b>\n\nSend username and touch what you want to do.";
+                                    var onetimeMenuTxtN = "<b>Instagram Black Menu</b>\n\n<b>One Time Actions</b>\n\nSend username and touch what you want to do.";
 
                                     telegramDeleteMessage(menuMessageId);
                                     menuMessageId = 0;
@@ -976,7 +976,7 @@ function startListenTelegram(){
                                                     delCheckMesId = "0";
                                                 }
 
-                                                var onetimeMenuTxtN = "<b>Insatagram Black Menu</b>\n\n<b>One Time Actions</b>\n\nSend username and touch what you want to do.";
+                                                var onetimeMenuTxtN = "<b>Instagram Black Menu</b>\n\n<b>One Time Actions</b>\n\nSend username and touch what you want to do.";
 
                                                 telegramDeleteMessage(menuMessageId);
                                                 menuMessageId = 0;
