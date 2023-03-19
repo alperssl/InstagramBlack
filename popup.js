@@ -284,6 +284,8 @@ function updateGhostMode(ghostmode){
 
             settings.ghostMode = ghostmode;
 
+            chrome.browserAction.setIcon({ path: ghostmode ? "iconGhost.png" : "icon.png" });
+
             chrome.storage.local.set({'savedSettings': settings}, function() {
                 //console.log("saved.");
                 chrome.runtime.sendMessage({command: "updateSettings"}, function(response) {

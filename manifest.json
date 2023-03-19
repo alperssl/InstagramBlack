@@ -3,7 +3,7 @@
 
     "name": "Instagram Black",
     "description": "Autosave instagram stories anonymously, or surf on instagram as ghost. And you can get notifications with Telegram Bot.",
-    "version": "1.62",
+    "version": "1.63",
 
     "browser_action": {
         "default_icon": "icon.png",
