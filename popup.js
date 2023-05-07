@@ -196,7 +196,7 @@ chkBtn.addEventListener('click', function(ev) {
 
 function getIdByUsername(username, callback){
     if(callback){
-        var RqstUrl = "https://www.instagram.com/" + username + "/?__a=1";
+        var RqstUrl = "https://www.instagram.com/" + username + "/?__a=1&__d=dist";
 
         var xhr = new XMLHttpRequest();
         xhr.onload = function() {
